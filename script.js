@@ -31,6 +31,10 @@ const questions = [
 ];
 
 // Display the quiz questions and choices
+const questionsElement = document.getElementById("questions");
+const userAnswers = JSON.parse(sessionStorage.getItem("progress")) || {};
+
+// Display the quiz questions and choices
 function renderQuestions() {
   for (let i = 0; i < questions.length; i++) {
     const question = questions[i];
@@ -46,6 +50,10 @@ function renderQuestions() {
       if (userAnswers[i] === choice) {
         choiceElement.setAttribute("checked", true);
       }
+      choiceElement.addEventListener("change", () => {
+        userAnswers[i] = choice;
+        sessionStorage.setItem("progress", JSON.stringify(userAnswers));
+      });
       const choiceText = document.createTextNode(choice);
       questionElement.appendChild(choiceElement);
       questionElement.appendChild(choiceText);
@@ -53,4 +61,26 @@ function renderQuestions() {
     questionsElement.appendChild(questionElement);
   }
 }
+
 renderQuestions();
+
+const submitButton = document.getElementById("submit");
+const scoreElement = document.getElementById("score");
+
+submitButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  let score = 0;
+  for (let i = 0; i < questions.length; i++) {
+    if (userAnswers[i] === questions[i].answer) {
+      score++;
+    }
+  }
+  localStorage.setItem("score", score);
+  scoreElement.textContent = `Your score is ${score} out of ${questions.length}`;
+});
+
+// Display last saved score
+const savedScore = localStorage.getItem("score");
+if (savedScore !== null) {
+  scoreElement.textContent = `Your last score was ${savedScore} out of ${questions.length}`;
+}
