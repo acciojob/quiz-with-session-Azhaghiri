@@ -76,11 +76,11 @@ submitButton.addEventListener("click", (e) => {
     }
   }
   localStorage.setItem("score", score);
-  scoreElement.textContent = `Your score is ${score} out of ${questions.length}`;
+  scoreElement.textContent = `Your score is ${score} out of ${questions.length}.`;
 });
 
 // Display last saved score
 const savedScore = localStorage.getItem("score");
 if (savedScore !== null) {
-  scoreElement.textContent = `Your last score was ${savedScore} out of ${questions.length}`;
+  scoreElement.textContent = `Your last score was ${savedScore} out of ${questions.length}.`;
 }
